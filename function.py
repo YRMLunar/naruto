@@ -7,24 +7,48 @@ INTERVAL = 0.5
 
 
 
-
-def run_state_flow():
+def qifu():
     # 遍历状态列表并执行匹配
     while 1:
-        if handle_match_organization(interval=2):
-            continue
-        if handle_match_wanfa_button(interval=2):
-            continue
-        if handle_match_goto_button(interval=2):
-            continue
-        if handle_match_qifu_button(interval=2):
-            continue
+        handle_match_organization(interval=2)
+        handle_match_wanfa_button(interval=2)
+        handle_match_qifu_button(interval=2)
+
         if handle_match_qifu_END_button(interval=2):
             break
         if handle_match_alreay_qifu_button(interval=2):
             break
+    while 1:
+        if handle_match_qifu_exit(interval=2):
+            continue
+        if handle_match_organization_exit(interval=2):
+            continue
+        if handle_match_menu(interval=2):
+            break
 
 
+
+def handle_match_qifu_exit(interval):
+    if match_qifu_exit(interval):
+        print("祈福退出匹配成功")
+        return True
+    else:
+        print("祈福退出匹配成功")
+        return False
+def handle_match_organization_exit(interval):
+    if match_organization_exit(interval):
+        print("组织退出匹配成功")
+        return True
+    else:
+        print("祈福退出匹配成功")
+        return False
+def handle_match_menu(interval):
+    if match_menu(interval):
+        print("主菜单匹配成功")
+        return True
+    else:
+        print("主菜单匹配成功")
+        return False
 
 # 设备连接
 def handle_match_organization(interval):
@@ -56,7 +80,7 @@ def handle_match_qifu_END_button(interval):
 def handle_match_wanfa_button(interval):
     if match_wanfa_button(interval):
         print("玩法按钮匹配成功")
-
+        match_goto_button(interval)
         return True  # 继续执行下一个状态
     else:
         print("玩法按钮匹配失败")
@@ -75,7 +99,7 @@ def handle_match_goto_button(interval):
 
 def handle_match_qifu_button(interval):
     if match_qifu_button(interval):
-        print("祈福按钮匹配成功")  #todo 在祈福界面会误识别goto成功
+        print("祈福按钮匹配成功")
         # 祈福按钮匹配成功后的操作
         return True  # 结束，匹配到祈福按钮
     else:
@@ -98,4 +122,4 @@ def run():
 
 
 if __name__ == '__main__':
-    run_state_flow()
+    qifu()

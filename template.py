@@ -15,6 +15,7 @@ def template_match(template):
     result = cv2.matchTemplate(gray_screenshot, template, cv2.TM_CCOEFF_NORMED)
     w,h = template.shape[::-1]  # 模板的宽度和高度
     threshold = 0.8
+    print(w,h)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
     print(max_val)
     top_left = max_loc
@@ -86,7 +87,7 @@ def match_wanfa_button(interval):
         return 0
     x=result[1]
     y=result[2]
-    device.click(x,y)#todo 将goto函数集成进入本函数，解决玩法会被重复识别问题
+    device.click(x,y)
     time.sleep(interval)
     return 1
 
@@ -97,7 +98,7 @@ def match_goto_button(interval):
         return 0
     x=result[1]
     y=result[2]
-    device.click(x,y+415)
+    device.click(x,y+244)
     time.sleep(interval)
     return 1
 
@@ -126,6 +127,33 @@ def match_qifu_alreay(interval):
     x=result[1]
     y=result[2]
     device.click(x,y+155)
+    time.sleep(interval)
+    return 1
+def match_qifu_exit(interval):
+    result=template_match('./datasets/qifu_exit.png')
+    if result[0]==0:
+        return 0
+    x=result[1]
+    y=result[2]
+    device.click(x,y)
+    time.sleep(interval)
+    return 1
+def match_organization_exit(interval):
+    result=template_match('./datasets/organization_exit.png')
+    if result[0]==0:
+        return 0
+    x=result[1]
+    y=result[2]
+    device.click(x,y)
+    time.sleep(interval)
+    return 1
+def match_menu(interval):
+    result=template_match('./datasets/menu.png')
+    if result[0]==0:
+        return 0
+    # x=result[1]
+    # y=result[2]
+    # device.click(x,y)
     time.sleep(interval)
     return 1
 if __name__ == '__main__':
