@@ -1,18 +1,48 @@
 import cv2
 from connect import adb_connect, checkconnect, get_serial
 from template import *
-
-INTERVAL = 0.5
 from handler_match_appear import *
 
+
+
+
 def xiaodui():
+
+
+
+
     while 1:
-        handle_match_xiaoduituxi(interval=2)
-        handle_match_start_button(interval=2)
+
+        if not handle_match_xiaoduituxi(interval=1):
+                break
+        if handle_match_xiaodui_complete_or_NOT_button(interval=1):
+            break
+        if not handle_match_zhuzhan_button(interval=1):
+                break
+        if not handle_match_yaoqing_button(interval=1):
+                break
+
+        if handle_match_xiaodui_end_button(interval=1):
+            break
+
 # todo 小队突袭
 
     while 1:
-        handle_match_organization(2)
+        handle_match_zhuzhan_exit(interval=1)
+        handle_match_qifu_exit(interval=1)
+        if match_menu(interval=1):
+            break
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -29,10 +59,8 @@ def qifu():
         if handle_match_alreay_qifu_button(interval=2):
             break
     while 1:
-        if handle_match_qifu_exit(interval=2):
-            continue
-        if handle_match_organization_exit(interval=2):
-            continue
+        handle_match_qifu_exit(interval=2)
+        handle_match_organization_exit(interval=2)
         if handle_match_menu(interval=2):
             break
 
@@ -54,4 +82,4 @@ def run():
 
 
 if __name__ == '__main__':
-    qifu()
+    xiaodui()

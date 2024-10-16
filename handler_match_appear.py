@@ -81,11 +81,14 @@ def handle_match_qifu_button(interval):
 def handle_match_xiaoduituxi(interval):
     if match_xiaoduituxi_button(interval):
         print("小队突袭匹配成功")
+        if handle_match_xiaodui_complete_or_NOT_button(interval):
+            return False
         # 祈福按钮匹配成功后的操作
         return True  # 结束，匹配到祈福按钮
     else:
         print("小队突袭匹配失败")
-        return False  # 结束，因为是最后一步
+        return True
+
 def handle_match_start_button(interval=2):
     if match_start_button(interval):
         print("开始匹配成功")
@@ -94,3 +97,46 @@ def handle_match_start_button(interval=2):
     else:
         print("开始匹配失败")
         return False  # 结束，因为是最后一步
+def handle_match_zhuzhan_button(interval=2):
+    if match_zhuzhan_button(interval):
+        print("助战匹配成功")
+        if handle_match_xiaodui_complete_or_NOT_button(interval):
+            return False
+
+        return True
+    else:
+        print("助战匹配失败")
+        return True
+def handle_match_xiaodui_end_button(interval):
+    if match_xiaodui_end_button(interval):
+        print("小队战斗结束匹配成功")
+        # 祈福按钮匹配成功后的操作
+        return True  # 结束，匹配到祈福按钮
+    else:
+        print("小队战斗结束匹配失败")
+        return False  # 结束，因为是最后一步
+def handle_match_yaoqing_button(interval):
+    if match_yaoqing_button(interval):
+        print("助战匹配成功")
+        if handle_match_xiaodui_complete_or_NOT_button(interval):
+            return False
+        if match_ready_FIGHT(interval):
+            match_start_button(interval)
+        return True
+    else:
+        print("助战匹配失败")
+        return True
+def handle_match_xiaodui_complete_or_NOT_button(interval):
+    if match_xiaodui_complete_or_NOT_button(interval):
+        print("小队已完成匹配成功")
+        return True
+    else:
+        print("小队已完成匹配失败")
+        return False
+def handle_match_zhuzhan_exit(interval=2):
+    if match_zhuzhan_exit(interval):
+        print("助战退出匹配成功")
+        return True
+    else:
+        print("助战退出匹配失败")
+        return False
