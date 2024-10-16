@@ -2,7 +2,7 @@ import cv2
 import uiautomator2 as u2
 
 def get_serial():
-    return '127.0.0.1:16449'
+    return '127.0.0.1:16448'
 def adb_connect(device):
     d=u2.connect(device)
     return d
