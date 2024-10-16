@@ -78,3 +78,19 @@ def handle_match_qifu_button(interval):
     else:
         print("祈福按钮匹配失败")
         return False  # 结束，因为是最后一步
+def handle_match_xiaoduituxi(interval):
+    if match_xiaoduituxi_button(interval):
+        print("小队突袭匹配成功")
+        # 祈福按钮匹配成功后的操作
+        return True  # 结束，匹配到祈福按钮
+    else:
+        print("小队突袭匹配失败")
+        return False  # 结束，因为是最后一步
+def handle_match_start_button(interval=2):
+    if match_start_button(interval):
+        print("开始匹配成功")
+        # 祈福按钮匹配成功后的操作
+        return True  # 结束，匹配到祈福按钮
+    else:
+        print("开始匹配失败")
+        return False  # 结束，因为是最后一步

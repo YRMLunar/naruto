@@ -5,6 +5,16 @@ from template import *
 INTERVAL = 0.5
 from handler_match_appear import *
 
+def xiaodui():
+    while 1:
+        handle_match_xiaoduituxi(interval=2)
+        handle_match_start_button(interval=2)
+# todo 小队突袭
+
+    while 1:
+        handle_match_organization(2)
+
+
 
 # 祈福
 def qifu():
