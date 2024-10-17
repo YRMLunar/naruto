@@ -1,5 +1,7 @@
-from template import *
+import time
 
+from template import *
+from status import *
 
 def handle_match_qifu_exit(interval):
     if match_qifu_exit(interval):
@@ -53,7 +55,9 @@ def handle_match_qifu_END_button(interval):
 def handle_match_wanfa_button(interval):
     if match_wanfa_button(interval):
         print("玩法按钮匹配成功")
-        match_goto_button(interval)
+        #match_goto_button(interval)
+        time.sleep(interval)
+        device.click(410,763)
         return True  # 继续执行下一个状态
     else:
         print("玩法按钮匹配失败")
@@ -81,6 +85,9 @@ def handle_match_qifu_button(interval):
 def handle_match_xiaoduituxi(interval):
     if match_xiaoduituxi_button(interval):
         print("小队突袭匹配成功")
+        global xiaoduituxi_menu
+        xiaoduituxi_menu=1
+        time.sleep(interval)
         if handle_match_xiaodui_complete_or_NOT_button(interval):
             return False
         # 祈福按钮匹配成功后的操作
@@ -100,6 +107,9 @@ def handle_match_start_button(interval=2):
 def handle_match_zhuzhan_button(interval=2):
     if match_zhuzhan_button(interval):
         print("助战匹配成功")
+        global xiaoduituxi_zhuzhan
+        xiaoduituxi_zhuzhan=1
+        time.sleep(interval)
         if handle_match_xiaodui_complete_or_NOT_button(interval):
             return False
 
@@ -110,6 +120,10 @@ def handle_match_zhuzhan_button(interval=2):
 def handle_match_xiaodui_end_button(interval):
     if match_xiaodui_end_button(interval):
         print("小队战斗结束匹配成功")
+        global xiaoduituxi_zhuzhan
+        global xiaoduituxi_yaoqing
+        xiaoduituxi_yaoqing=0
+        xiaoduituxi_zhuzhan=0
         # 祈福按钮匹配成功后的操作
         return True  # 结束，匹配到祈福按钮
     else:
@@ -121,13 +135,18 @@ def handle_match_yaoqing_button(interval):
         if handle_match_xiaodui_complete_or_NOT_button(interval):
             return False
         if match_ready_FIGHT(interval):
+
             match_start_button(interval)
+            global xiaoduituxi_yaoqing
+            xiaoduituxi_yaoqing=1
+            time.sleep(interval)
         return True
     else:
         print("助战匹配失败")
         return True
 def handle_match_xiaodui_complete_or_NOT_button(interval):
     if match_xiaodui_complete_or_NOT_button(interval):
+        setzero()
         print("小队已完成匹配成功")
         return True
     else:

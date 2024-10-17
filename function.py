@@ -12,18 +12,21 @@ def xiaodui():
 
 
     while 1:
-
-        if not handle_match_xiaoduituxi(interval=1):
+        if xiaoduituxi_menu==0:
+            if not handle_match_xiaoduituxi(interval=1):
                 break
+
         if handle_match_xiaodui_complete_or_NOT_button(interval=1):
             break
-        if not handle_match_zhuzhan_button(interval=1):
+        if xiaoduituxi_zhuzhan==0:
+            if not handle_match_zhuzhan_button(interval=1):
                 break
-        if not handle_match_yaoqing_button(interval=1):
+        if xiaoduituxi_yaoqing==0:
+            if not handle_match_yaoqing_button(interval=1):
                 break
 
         if handle_match_xiaodui_end_button(interval=1):
-            break
+            continue
 
 # todo 小队突袭
 
@@ -50,13 +53,13 @@ def xiaodui():
 def qifu():
     # 遍历状态列表并执行匹配
     while 1:
-        handle_match_organization(interval=2)
-        handle_match_wanfa_button(interval=2)
-        handle_match_qifu_button(interval=2)
+        handle_match_organization(interval=1)
+        handle_match_wanfa_button(interval=1)
+        handle_match_qifu_button(interval=1)
 
-        if handle_match_qifu_END_button(interval=2):
+        if handle_match_qifu_END_button(interval=1):
             break
-        if handle_match_alreay_qifu_button(interval=2):
+        if handle_match_alreay_qifu_button(interval=1):
             break
     while 1:
         handle_match_qifu_exit(interval=2)
@@ -82,4 +85,4 @@ def run():
 
 
 if __name__ == '__main__':
-    xiaodui()
+   qifu()

@@ -78,7 +78,7 @@ def match_organization(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 
 def match_wanfa_button(interval):
@@ -88,7 +88,7 @@ def match_wanfa_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 
 
@@ -99,7 +99,7 @@ def match_goto_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y+244)
-    time.sleep(interval)
+
     return 1
 
 def match_qifu_button(interval):
@@ -109,7 +109,7 @@ def match_qifu_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_qifu_end(interval):
     result=template_match('./datasets/qifu_end.png')
@@ -136,7 +136,7 @@ def match_qifu_exit(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_organization_exit(interval):
     result=template_match('./datasets/organization_exit.png')
@@ -145,7 +145,7 @@ def match_organization_exit(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_menu(interval):
     result=template_match('./datasets/menu.png')
@@ -154,7 +154,7 @@ def match_menu(interval):
     # x=result[1]
     # y=result[2]
     # device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_xiaoduituxi_button(interval):
     result=template_match('./datasets/xiaoduituxi.png')
@@ -163,7 +163,7 @@ def match_xiaoduituxi_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_start_button(interval):
     result=template_match('./datasets/chuzhan.png')
@@ -172,7 +172,7 @@ def match_start_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_zhuzhan_button(interval):
     result=template_match('./datasets/zuzhizhuzhan.png')
@@ -181,7 +181,7 @@ def match_zhuzhan_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_ready_FIGHT(interval):
     result=template_match('./datasets/ready_fight.png')
@@ -195,7 +195,7 @@ def match_yaoqing_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_xiaodui_end_button(interval):
     result=template_match('./datasets/xiaodui_end.png')
@@ -204,7 +204,7 @@ def match_xiaodui_end_button(interval):
     x=result[1]
     y=result[2]
     device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_xiaodui_complete_or_NOT_button(interval):
     result=template_match('./datasets/xiaoduicomplete.png')
@@ -213,7 +213,7 @@ def match_xiaodui_complete_or_NOT_button(interval):
     x=result[1]
     y=result[2]
     #device.click(x,y)
-    time.sleep(interval)
+
     return 1
 def match_zhuzhan_exit(interval):
     result=template_match('./datasets/zhuzhan_exit.png')
