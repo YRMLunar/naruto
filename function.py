@@ -2,7 +2,16 @@ import cv2
 from connect import adb_connect, checkconnect, get_serial
 from template import *
 from handler_match_appear import *
+def fengrao():
+   while 1:
+       if fengrao_menu==0:
+           handle_match_fengrao(interval=2)
+       if fengrao_tiaozhan==0:
+           handle_match_fengrao_tiaozhan(interval=2)
+#todo 丰饶之间战斗模式和结束识别 待完成
 
+fengrao_tiaozhan=0
+fengrao_menu=0
 
 
 
@@ -85,4 +94,4 @@ def run():
 
 
 if __name__ == '__main__':
-   qifu()
+    device.drag(270,691,110,691,0.1)

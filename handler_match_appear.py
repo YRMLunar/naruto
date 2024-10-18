@@ -63,7 +63,18 @@ def handle_match_wanfa_button(interval):
         print("玩法按钮匹配失败")
         return False  # 不再执行后续步骤
 
-
+def handle_match_fengrao(interval):
+    if match_fengrao_menu(interval):
+        global  fengrao_menu
+        fengrao_menu=1
+        return 1
+    else: return 0
+def handle_match_fengrao_tiaozhan(interval=2):
+    if match_fengrao_tiaozhan(interval):
+        global fengrao_tiaozhan
+        fengrao_tiaozhan=1
+        return 1
+    else: return 0
 def handle_match_goto_button(interval):
     if match_goto_button(interval):
         print("前往按钮匹配成功")

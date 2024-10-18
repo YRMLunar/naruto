@@ -1,34 +1,49 @@
+import threading
+from status import *
 import cv2
+import numpy as np
 from pygments.lexers import q
-import  time
+import time
 from connect import get_serial, adb_connect
 
 serial = get_serial()
 device = adb_connect(serial)
 
-#模板匹配
-def template_match(template):
-    screen_shot()
-    screenshot = cv2.imread('./datasets/screenshot.png')
-    template=cv2.imread(template,0)
-    gray_screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2GRAY)
-    result = cv2.matchTemplate(gray_screenshot, template, cv2.TM_CCOEFF_NORMED)
-    w,h = template.shape[::-1]  # 模板的宽度和高度
-    threshold = 0.8
-    print(w,h)
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    print(max_val)
-    top_left = max_loc
-    perhaps_x =top_left[0]+w/2
-    perhaps_y =top_left[1]+h/2
-    print(perhaps_x,perhaps_y)
-    if max_val >= threshold:
-        print("模板匹配成功")
 
-        return 1,perhaps_x,perhaps_y
-    else:
-        print("模板匹配失败，状态不存在")
-        return 0,perhaps_x,perhaps_y
+# 模板匹配
+def template_match(template_path=None, templates=None, threshold=0.8):
+    loc_copy = None
+    perhaps_x_copy = None
+    perhaps_y_copy = None
+    if templates is None:
+        templates = [template_path]
+    for t in templates:
+        print(threshold)
+        screen_shot()
+        screenshot = cv2.imread('./datasets/screenshot.png')
+        template = cv2.imread(t, 0)
+        gray_screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2GRAY)
+        result = cv2.matchTemplate(gray_screenshot, template, cv2.TM_CCOEFF_NORMED)
+        w, h = template.shape[::-1]  # 模板的宽度和高度
+        loc = np.where(result >= threshold)
+        print(w, h)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+        print(max_val)
+        top_left = max_loc
+        perhaps_x = top_left[0] + w / 2
+        perhaps_y = top_left[1] + h / 2
+        print(perhaps_x, perhaps_y)
+        loc_copy = loc
+        perhaps_x_copy = perhaps_x
+        perhaps_y_copy = perhaps_y
+        if max_val >= threshold:
+            print("模板匹配成功")
+
+            return 1, perhaps_x, perhaps_y, loc
+        else:
+            continue
+    print("模板匹配成功")
+    return 0, perhaps_x, perhaps_y, loc
 
 
 def match():
@@ -45,187 +60,330 @@ def match():
         match_fighting()
 
 
-
-
 def screen_shot():
     device.screenshot("./datasets/screenshot.png")
 
-#要塞界面
+
+# 要塞界面
 def match_yaosai():
     center_x, center_y = 271, 692
     device.drag(center_x, center_y, center_x + 300, center_y, duration=2.0)
 
-#匹配状态
+
+# 匹配状态
 def match_wait():
-  ''''
-  '''
-#战斗界面
-def match_fighting():
+    ''''
     '''
 
 
-    '''
-#组织主界面
+# 战斗界面
+
+
+# 组织主界面
 def match_zuzhi():
-  x=155
-  y=555
-  device.click(x,y)
+    x = 155
+    y = 555
+    device.click(x, y)
+
 
 def match_organization(interval):
-    result=template_match('./datasets/zuzhi_enter.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/zuzhi_enter.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
 
+
 def match_wanfa_button(interval):
-    result=template_match('./datasets/wanfa.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/wanfa.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
 
 
 def match_goto_button(interval):
-    result=template_match('./datasets/qifu.png')
-    if result==0:
+    result = template_match(template_path='./datasets/qifu.png')
+    if result == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y+244)
+    x = result[1]
+    y = result[2]
+    device.click(x, y + 244)
 
     return 1
+
+
+def match_fengrao_menu(interval):
+    result = template_match(template_path='./datasets/fengrao.png')
+    if result[0] == 0:
+        return 0
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
+
+    return 1
+
+
+def match_fengrao_tiaozhan(interval):
+    result = template_match(template_path='./datasets/fengrao_tiaozhan.png')
+    if result[0] == 0:
+        return 0
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
+
+    return 1
+
 
 def match_qifu_button(interval):
-    result=template_match('./datasets/qifu_button.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/qifu_button.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_qifu_end(interval):
-    result=template_match('./datasets/qifu_end.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/qifu_end.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
     time.sleep(interval)
     return 1
+
+
 def match_qifu_alreay(interval):
-    result=template_match('./datasets/qifu_already.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/qifu_already.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y+155)
+    x = result[1]
+    y = result[2]
+    device.click(x, y + 155)
     time.sleep(interval)
     return 1
+
+
 def match_qifu_exit(interval):
-    result=template_match('./datasets/qifu_exit.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/qifu_exit.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_organization_exit(interval):
-    result=template_match('./datasets/organization_exit.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/organization_exit.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_menu(interval):
-    result=template_match('./datasets/menu.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/menu.png')
+    if result[0] == 0:
         return 0
     # x=result[1]
     # y=result[2]
     # device.click(x,y)
 
     return 1
+
+
 def match_xiaoduituxi_button(interval):
-    result=template_match('./datasets/xiaoduituxi.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/xiaoduituxi.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_start_button(interval):
-    result=template_match('./datasets/chuzhan.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/chuzhan.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_zhuzhan_button(interval):
-    result=template_match('./datasets/zuzhizhuzhan.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/zuzhizhuzhan.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_ready_FIGHT(interval):
-    result=template_match('./datasets/ready_fight.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/ready_fight.png')
+    if result[0] == 0:
         return 0
     return 1
+
+
 def match_yaoqing_button(interval):
-    result=template_match('./datasets/yaoqingzhuzhan.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/yaoqingzhuzhan.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_xiaodui_end_button(interval):
-    result=template_match('./datasets/xiaodui_end.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/xiaodui_end.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y)
+    x = result[1]
+    y = result[2]
+    device.click(x, y)
 
     return 1
+
+
 def match_xiaodui_complete_or_NOT_button(interval):
-    result=template_match('./datasets/xiaoduicomplete.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/xiaoduicomplete.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    #device.click(x,y)
+    x = result[1]
+    y = result[2]
+    # device.click(x,y)
 
     return 1
+
+
 def match_zhuzhan_exit(interval):
-    result=template_match('./datasets/zhuzhan_exit.png')
-    if result[0]==0:
+    result = template_match(template_path='./datasets/zhuzhan_exit.png')
+    if result[0] == 0:
         return 0
-    x=result[1]
-    y=result[2]
-    device.click(x,y+172)
+    x = result[1]
+    y = result[2]
+    device.click(x, y + 172)
     time.sleep(interval)
     return 1
 
+
+def move_joystick(direction, center_x=271, center_y=693, move_distance=100):
+    if direction == 'left':
+        device.drag(center_x, center_y, center_x - move_distance, center_y, duration=0.5)
+    elif direction == 'right':
+        device.drag(center_x, center_y, center_x + move_distance, center_y, duration=0.5)
+    elif direction == 'up':
+        device.drag(center_x, center_y, center_x, center_y - move_distance, duration=2)
+    elif direction == 'down':
+        device.drag(center_x, center_y, center_x, center_y + move_distance, duration=2)
+
+
+def match_self(t):
+    template = ['./datasets/self.png', './datasets/self_1.png']
+    result = template_match(templates=template, threshold=t)
+    return result
+
+
+def match_enemy(t):
+    template = ['./datasets/enemy_1.png', './datasets/enemy.png', './datasets/enemy_2.png']
+    loc = template_match(templates=template, threshold=t)
+    return loc
+
+
+def click(device, x, y):
+    device.click(x, y)
+
+
+def long_press(device, x, y, duration=1000):
+    while fighting_running:
+        device.touch.down(x, y)
+
+
+
+
+def match_fighting(interval=30):
+    start_time = time.time()
+    # device.touch.down(1428, 746)
+    # device.touch.down(1250, 800)
+    # device.touch.down(, 746)
+    long_press_thread = threading.Thread(target=long_press, args=(device, 1424, 751))
+    long_press_thread.start()
+
+    # device.touch.down(1424, 751)
+    center_x = 271  # 实际轮盘中心x坐标
+    center_y = 693  # 实际轮盘中心y坐标
+    try:
+        while True:
+
+        # 检测敌人
+
+            enemy_location = match_enemy(0.5)
+            self_location = match_self(0.5)
+
+            if enemy_location[0] == 1:  # 如果检测到敌人
+                enemy_x = enemy_location[1]
+                self_x = self_location[1]
+                if enemy_x < self_x:
+                # 敌人在左侧，向左移动并释放技能
+                    move_left = threading.Thread(target=move_joystick, args=('left',))
+                    move_left.start()
+                    #move_joystick('left')
+                    click_1 = threading.Thread(target=click, args=(device, 1252, 806))
+                    click_2 = threading.Thread(target=click, args=(device, 1274, 628))
+                    click_1.start()
+                    click_2.start()
+            # device.click(1252, 806)
+            # device.click(1274, 628)
+            # 释放技能
+                else:
+                # 敌人在右侧，向右移动并释放技能
+                    move_right = threading.Thread(target=move_joystick, args=('right',))
+                    #move_joystick('right')  # 向右移动
+                    move_right.start()
+                    click_1 = threading.Thread(target=click, args=(device, 1252, 806))
+                    click_2 = threading.Thread(target=click, args=(device, 1274, 628))
+                    click_1.start()
+                    click_2.start()
+                # device.click(1252, 806)
+                # device.click(1274, 628)  # 释放技能
+            if time.time() - start_time > interval:
+                print('超过战斗时间限制')
+                device.touch.up(1424, 751)
+                global fighting_running
+                fighting_running = 0
+                break
+
+#TODO 战斗功能基本完善，但丰饶之间等副本里小怪脚底无红圈导致无法识别
+
+
+    finally:
+        fighting_running=0
+        device.touch.up(1424, 751)
+
+
 if __name__ == '__main__':
-    match_organization()
-    match_wanfa_button()
-    match_goto_button()
+    match_fighting()
