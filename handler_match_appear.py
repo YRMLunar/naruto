@@ -1,4 +1,4 @@
-import time
+
 
 from template import *
 from status import *
@@ -163,10 +163,41 @@ def handle_match_xiaodui_complete_or_NOT_button(interval):
     else:
         print("小队已完成匹配失败")
         return False
-def handle_match_zhuzhan_exit(interval=2):
+def handle_match_zhuzhan_exit(interval):
     if match_zhuzhan_exit(interval):
         print("助战退出匹配成功")
         return True
     else:
         print("助战退出匹配失败")
         return False
+def handle_match_yaosai_menu(interval):
+    if match_yaosai_menu(interval):
+        print("要塞界面匹配成功")
+        return True
+    else:
+        print("要塞界面匹配失败")
+        return False
+
+def handle_match_yaosai_fighting(interval):
+    if match_yaosai_fighting(interval):
+        print('战斗状态匹配成功')
+        return True
+    else:
+        print('战斗状态匹配失败')
+        return False
+def handle_match_yaosai_fighting_end(interval):
+    if match_yaosai_fighting_end(interval):
+        print('战斗结束匹配成功')
+        return True
+    else:
+        print('战斗结束匹配失败')
+        return False
+def handle_match_yaosai_end(interval):
+    if match_yaosai_end(interval):
+        print('要塞收益全部获得匹配成功')
+        return True
+    else:
+        print('要塞收益全部获得匹配失败')
+        return False
+if __name__ == '__main__':
+    handle_match_yaosai_waiting(1)

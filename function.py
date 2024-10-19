@@ -75,6 +75,15 @@ def qifu():
         handle_match_organization_exit(interval=2)
         if handle_match_menu(interval=2):
             break
+def yaosai():
+    while 1:
+        if yaosai_pipei==0:
+            handle_match_yaosai_menu(interval=1)
+        handle_match_yaosai_fighting(interval=30)
+        if yaosai_fighting==1:
+            handle_match_yaosai_fighting_end(interval=1)
+        if yaosai_fighting==0 and handle_match_yaosai_end(interval=1):
+            break
 
 
 
@@ -94,4 +103,4 @@ def run():
 
 
 if __name__ == '__main__':
-    device.drag(270,691,110,691,0.1)
+    yaosai()

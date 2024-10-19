@@ -5,7 +5,6 @@ import numpy as np
 from pygments.lexers import q
 import time
 from connect import get_serial, adb_connect
-
 serial = get_serial()
 device = adb_connect(serial)
 
@@ -42,8 +41,8 @@ def template_match(template_path=None, templates=None, threshold=0.8):
             return 1, perhaps_x, perhaps_y, loc
         else:
             continue
-    print("模板匹配成功")
-    return 0, perhaps_x, perhaps_y, loc
+    print("模板匹配失败")
+    return 0, perhaps_x_copy, perhaps_y_copy, loc_copy
 
 
 def match():
@@ -383,7 +382,46 @@ def match_fighting(interval=30):
     finally:
         fighting_running=0
         device.touch.up(1424, 751)
+def match_yaosai_waiting(interval):
+    result=template_match(template_path='./datasets/pipei.png')
+    if result[0] == 0:
+        print('要塞等待匹配失败')
+        return 0
+    print('要塞等待匹配成功')
+    return 1
+def match_yaosai_menu(interval):
+    result=template_match(template_path='./datasets/replace.png')
+    if result[0] == 0:
+        return 0
+    move_joystick('right')
+    if match_yaosai_waiting(interval=1):
+        global yaosai_pipei
+        yaosai_pipei=1
+        return 1
+    return 1
+def match_yaosai_fighting(interval):
+    result=template_match(template_path='./datasets/attack.png')
+    if result[0] == 0:
+        return 0
+    global yaosai_fighting
+    yaosai_fighting=1
+    match_fighting(interval)
+    return 1
+def match_yaosai_fighting_end(interval):
+    result=template_match(template_path='./datasets/yaosai_fighting_end.png')
+    if result[0] == 0:
+        return 0
+    global  yaosai_pipei
+    yaosai_pipei=0
+    global  yaosai_fighting
+    yaosai_fighting=0
+    return 1
+def match_yaosai_end(interval):
+    result=template_match(template_path='./datasets/yaosai_end.png')
+    if result[0]==0:
+        return 0
+    return 1
 
 
 if __name__ == '__main__':
-    match_fighting()
+    match_yaosai_waitting(1)
