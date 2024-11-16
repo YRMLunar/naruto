@@ -72,9 +72,19 @@ def handle_match_fengrao(interval):
 def handle_match_fengrao_tiaozhan(interval=2):
     if match_fengrao_tiaozhan(interval):
         global fengrao_tiaozhan
+        global fengrao_menu
+        fengrao_menu=1
         fengrao_tiaozhan=1
         return 1
     else: return 0
+def handle_match_fengrao_fightting(interval=2):
+    if match_yaosai_fighting(interval):
+        global fengrao_fighting
+        fengrao_tiaozhan=1
+        match_fighting(object=['./datasets/fengrao_enemy_1.png', './datasets/fengrao_enemy_2.png'],mode='fengrao')
+        return 1
+    else: return 0
+
 def handle_match_goto_button(interval):
     if match_goto_button(interval):
         print("前往按钮匹配成功")
@@ -199,5 +209,3 @@ def handle_match_yaosai_end(interval):
     else:
         print('要塞收益全部获得匹配失败')
         return False
-if __name__ == '__main__':
-    handle_match_yaosai_waiting(1)

@@ -292,9 +292,9 @@ def match_zhuzhan_exit(interval):
 
 def move_joystick(direction, center_x=271, center_y=693, move_distance=100):
     if direction == 'left':
-        device.drag(center_x, center_y, center_x - move_distance, center_y, duration=0.5)
+        device.drag(center_x, center_y, center_x - move_distance, center_y, duration=2)
     elif direction == 'right':
-        device.drag(center_x, center_y, center_x + move_distance, center_y, duration=0.5)
+        device.drag(center_x, center_y, center_x + move_distance, center_y, duration=2)
     elif direction == 'up':
         device.drag(center_x, center_y, center_x, center_y - move_distance, duration=2)
     elif direction == 'down':
@@ -307,29 +307,35 @@ def match_self(t):
     return result
 
 
-def match_enemy(t):
-    template = ['./datasets/enemy_1.png', './datasets/enemy.png', './datasets/enemy_2.png']
+def match_enemy(t,object):
+    template = object
     loc = template_match(templates=template, threshold=t)
     return loc
 
 
 def click(device, x, y):
-    device.click(x, y)
+    while fighting_running:
+        device.click(x, y)
 
 
 def long_press(device, x, y, duration=1000):
-    while fighting_running:
         device.touch.down(x, y)
 
 
 
 
-def match_fighting(interval=30):
+def match_fighting(interval=30, object=None,mode=None):
+    screen_shot()
+    thread=0.5
+    if object is None:
+        object = ['./datasets/enemy_1.png', './datasets/enemy.png', './datasets/enemy2.png',]
+    if mode == 'fengrao':
+        thread=0.3
     start_time = time.time()
     # device.touch.down(1428, 746)
     # device.touch.down(1250, 800)
     # device.touch.down(, 746)
-    long_press_thread = threading.Thread(target=long_press, args=(device, 1424, 751))
+    long_press_thread = threading.Thread(target=click, args=(device, 1424, 751))
     long_press_thread.start()
 
     # device.touch.down(1424, 751)
@@ -337,11 +343,10 @@ def match_fighting(interval=30):
     center_y = 693  # 实际轮盘中心y坐标
     try:
         while True:
-
         # 检测敌人
 
-            enemy_location = match_enemy(0.5)
-            self_location = match_self(0.5)
+            enemy_location = match_enemy(t=thread,object=object)
+            self_location = match_self(t=thread)
 
             if enemy_location[0] == 1:  # 如果检测到敌人
                 enemy_x = enemy_location[1]
@@ -381,7 +386,10 @@ def match_fighting(interval=30):
 
     finally:
         fighting_running=0
-        device.touch.up(1424, 751)
+
+
+
+
 def match_yaosai_waiting(interval):
     result=template_match(template_path='./datasets/pipei.png')
     if result[0] == 0:
@@ -400,7 +408,8 @@ def match_yaosai_menu(interval):
         return 1
     return 1
 def match_yaosai_fighting(interval):
-    result=template_match(template_path='./datasets/attack.png')
+    screen_shot()
+    result=template_match(template_path='./datasets/attack.png',threshold=0.5)
     if result[0] == 0:
         return 0
     global yaosai_fighting
@@ -408,20 +417,24 @@ def match_yaosai_fighting(interval):
     match_fighting(interval)
     return 1
 def match_yaosai_fighting_end(interval):
-    result=template_match(template_path='./datasets/yaosai_fighting_end.png')
+    result=template_match(template_path='./datasets/fighting_end.png')
     if result[0] == 0:
         return 0
     global  yaosai_pipei
     yaosai_pipei=0
     global  yaosai_fighting
     yaosai_fighting=0
+    click(500,500)
     return 1
 def match_yaosai_end(interval):
     result=template_match(template_path='./datasets/yaosai_end.png')
     if result[0]==0:
         return 0
     return 1
-
-
 if __name__ == '__main__':
-    match_yaosai_waitting(1)
+    match_fighting()
+
+
+
+
+

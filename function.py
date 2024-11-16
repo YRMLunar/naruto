@@ -1,61 +1,52 @@
 import cv2
 from connect import adb_connect, checkconnect, get_serial
-from template import *
 from handler_match_appear import *
+
+
 def fengrao():
-   while 1:
-       if fengrao_menu==0:
-           handle_match_fengrao(interval=2)
-       if fengrao_tiaozhan==0:
-           handle_match_fengrao_tiaozhan(interval=2)
-#todo 丰饶之间战斗模式和结束识别 待完成
+    while 1:
+        if fengrao_menu == 0:
+            handle_match_fengrao(interval=2)
+        if fengrao_tiaozhan == 0:
+            handle_match_fengrao_tiaozhan(interval=2)
+        if fengrao_fighting == 0:
+            handle_match_fengrao_fightting()
+        if fengrao_fighting == 1:
+            handle_match_xiaodui_end_button(interval=2)
 
-fengrao_tiaozhan=0
-fengrao_menu=0
 
+
+# todo 丰饶之间战斗模式和结束识别 待完成
+
+fengrao_tiaozhan = 0
+fengrao_menu = 0
 
 
 def xiaodui():
-
-
-
-
     while 1:
-        if xiaoduituxi_menu==0:
+        if xiaoduituxi_menu == 0:
             if not handle_match_xiaoduituxi(interval=1):
                 break
 
         if handle_match_xiaodui_complete_or_NOT_button(interval=1):
             break
-        if xiaoduituxi_zhuzhan==0:
+        if xiaoduituxi_zhuzhan == 0:
             if not handle_match_zhuzhan_button(interval=1):
                 break
-        if xiaoduituxi_yaoqing==0:
+        if xiaoduituxi_yaoqing == 0:
             if not handle_match_yaoqing_button(interval=1):
                 break
 
         if handle_match_xiaodui_end_button(interval=1):
             continue
 
-# todo 小队突袭
+    # todo 小队突袭
 
     while 1:
         handle_match_zhuzhan_exit(interval=1)
         handle_match_qifu_exit(interval=1)
         if match_menu(interval=1):
             break
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # 祈福
@@ -75,17 +66,17 @@ def qifu():
         handle_match_organization_exit(interval=2)
         if handle_match_menu(interval=2):
             break
+
+
 def yaosai():
     while 1:
-        if yaosai_pipei==0:
+        if yaosai_pipei == 0:
             handle_match_yaosai_menu(interval=1)
         handle_match_yaosai_fighting(interval=30)
-        if yaosai_fighting==1:
+        if yaosai_fighting == 1:
             handle_match_yaosai_fighting_end(interval=1)
-        if yaosai_fighting==0 and handle_match_yaosai_end(interval=1):
+        if handle_match_yaosai_end(interval=1):
             break
-
-
 
 
 def run():
