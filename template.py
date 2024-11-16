@@ -330,6 +330,7 @@ def match_fighting(interval=30, object=None,mode=None):
     if object is None:
         object = ['./datasets/enemy_1.png', './datasets/enemy.png', './datasets/enemy2.png',]
     if mode == 'fengrao':
+        object=['./datasets/fengrao_enemy_1.png', './datasets/fengrao_enemy_2.png']
         thread=0.3
     start_time = time.time()
     # device.touch.down(1428, 746)
@@ -432,7 +433,7 @@ def match_yaosai_end(interval):
         return 0
     return 1
 if __name__ == '__main__':
-    match_fighting()
+    match_fighting(mode='fengrao')
 
 
 

@@ -81,9 +81,10 @@ def handle_match_fengrao_fightting(interval=2):
     if match_yaosai_fighting(interval):
         global fengrao_fighting
         fengrao_tiaozhan=1
-        match_fighting(object=['./datasets/fengrao_enemy_1.png', './datasets/fengrao_enemy_2.png'],mode='fengrao')
+        match_fighting(mode='fengrao')
         return 1
-    else: return 0
+    else:
+        return 0
 
 def handle_match_goto_button(interval):
     if match_goto_button(interval):
